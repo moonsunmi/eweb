@@ -1,3 +1,6 @@
+import cgi
+
+
 class Request:
     def __init__(self, environ, start_response):
         self.environ = environ
@@ -12,7 +15,6 @@ class Request:
         self.remote_host = environ.get('REMOTE_HOST')
         self.content_type = environ.get('CONTENT_TYPE')
         self.content_length = environ.get('CONTENT_LENGTH')
-        self.body = environ.get('BODY')
         self.query_string = environ.get('QUERY_STRING')
         self.server_protocol = environ.get('SERVER_PROTOCOL')
         self.server_software = environ.get('SERVER_SOFTWARE')
@@ -24,3 +26,9 @@ class Request:
         if self.method != 'POST':
             return
         environ = self.environ
+        field_storage = cgi.FieldStorage(
+            fp=environ.get('wsgi.input'),
+            environ=environ,
+            keep_blank_values=True,
+        )
+
