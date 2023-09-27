@@ -32,3 +32,7 @@ class Request:
             keep_blank_values=True,
         )
 
+        for item in field_storage.list:
+            if not item.filename:
+                pass
+
