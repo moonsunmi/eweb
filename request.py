@@ -1,6 +1,24 @@
 import cgi
 
 
+class POSTBody:
+    def __init__(self, data):
+        self.data = data
+
+    def get(self, key):
+        value = self.data.get(key, [''])
+        if type(value) == str:
+            value = cgi.escape(value)
+        return value
+
+    def set(self, key, value):
+        self.data[key] = value
+
+    def __iter__(self):
+        for key, value in self.data:
+            yield key, value
+
+
 class Request:
     def __init__(self, environ, start_response):
         self.environ = environ
