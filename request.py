@@ -43,6 +43,7 @@ class Request:
     def parse_qs(self):
         if self.method != 'POST':
             return
+        self.post = POSTBody({})
         environ = self.environ
         field_storage = cgi.FieldStorage(
             fp=environ.get('wsgi.input'),
@@ -52,5 +53,8 @@ class Request:
 
         for item in field_storage.list:
             if not item.filename:
-                pass
+                self.post.set(item.key, item.value)
+            else:
+                self.post.set(item.key, item)
+
 
