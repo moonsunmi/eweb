@@ -1,5 +1,6 @@
 from request import Request
 from typing import Callable
+import json
 
 
 class Response:
@@ -13,3 +14,18 @@ class Response:
     def make_response(self):
         self.start_response(self.status_code, self.headers)
         return self.response_content
+
+
+class HttpResponse(Response):
+    def __init__(self, request, content, status_code, content_type='text/html'):
+        super().__init__(request, status_code, content_type)
+        if type(content) == str:
+            content = content.encode()
+        self.response_content.append(content)
+
+
+class JsonResponse(Response):
+    def __init__(self, request, content, status_code, content_type='application/json'):
+        super().__init__(request, status_code, content_type)
+        content = json.dumps(content)
+        self.response_content.append(content)
