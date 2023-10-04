@@ -1,4 +1,3 @@
-from request import Request
 from typing import Callable
 import json
 
@@ -29,3 +28,14 @@ class JsonResponse(Response):
         super().__init__(request, status_code, content_type)
         content = json.dumps(content)
         self.response_content.append(content)
+
+
+class ErrorResponse(Response):
+    def __init__(self, request, error_code: str):
+        super().__init__(request, status_code=error_code, content_type='text/html')
+
+
+class Http404(ErrorResponse):
+    def __init__(self, request, error_code='404 Not Found'):
+        super().__init__(request, error_code)
+        self.response_content.append('404 Not Found'.encode())
