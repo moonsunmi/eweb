@@ -7,6 +7,10 @@ class App:
     def __init__(self):
         self.router = Router()
 
+    def set_routes(self, routes: list):
+        for path in routes:
+            self.router.add_route(path)
+
     def __call__(self, environ, start_response):
         print(f'environ: f{environ}')
         request = Request(environ, start_response)
