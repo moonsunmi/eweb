@@ -12,7 +12,6 @@ class App:
             self.router.add_route(path)
 
     def __call__(self, environ, start_response):
-        print(f'environ: f{environ}')
         request = Request(environ, start_response)
         try:
             print(f'Incoming request: f{request.path}')

@@ -4,10 +4,10 @@ import json
 
 class Response:
     def __init__(self, request, status_code, content_type):
-        self.headers: list = [('Content-type', content_type)]
         self.start_response: Callable = request.start_response
         self.status_code: str = status_code
         self.content_type: str = content_type
+        self.headers: list = [('Content-type', content_type)]
         self.response_content: list = []
 
     def make_response(self):
@@ -16,7 +16,7 @@ class Response:
 
 
 class HttpResponse(Response):
-    def __init__(self, request, content, status_code, content_type='text/html'):
+    def __init__(self, request, content, status_code='200 OK', content_type='text/html'):
         super().__init__(request, status_code, content_type)
         if type(content) == str:
             content = content.encode()
@@ -24,9 +24,9 @@ class HttpResponse(Response):
 
 
 class JsonResponse(Response):
-    def __init__(self, request, content, status_code, content_type='application/json'):
+    def __init__(self, request, content, status_code='200 OK', content_type='application/json'):
         super().__init__(request, status_code, content_type)
-        content = json.dumps(content)
+        content = json.dumps(content).encode()
         self.response_content.append(content)
 
 
